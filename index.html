@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f5f8">
+<title>برنامه تمرینی | PPL</title>
+<style>
+:root{--bg:#f4f5f8;--surface:rgba(255,255,255,.88);--card:#fff;--text:#171923;--muted:#777d8b;--line:#e9ebf0;--blue:#3478f6;--blue-soft:#eaf1ff;--green:#20a46b;--shadow:0 10px 30px rgba(25,35,60,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Tahoma,sans-serif;line-height:1.65}button,input{font:inherit}button{cursor:pointer}
+.app{max-width:760px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(100px + env(safe-area-inset-bottom))}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}.brand-mark{width:38px;height:38px;border-radius:13px;background:#171923;color:white;display:grid;place-items:center;font-size:18px}.top-actions{display:flex;gap:8px}.icon-btn{border:1px solid var(--line);background:var(--surface);width:40px;height:40px;border-radius:14px;color:var(--text);font-size:18px}
+.hero{background:linear-gradient(135deg,#171923,#293752);color:white;border-radius:30px;padding:25px 23px 22px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(83,143,255,.18);left:-65px;top:-80px}.hero .eyebrow{color:#b8c9eb}.hero h1{font-size:29px;line-height:1.25;margin:9px 0 7px}.hero p{margin:0;color:#c9d1df;font-size:13px;max-width:440px}.hero-stats{display:flex;gap:10px;margin-top:20px;position:relative;z-index:1}.stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);padding:9px 12px;border-radius:14px;min-width:90px}.stat b{display:block;font-size:16px}.stat span{font-size:11px;color:#c9d1df}
+.section-label{font-size:15px;font-weight:800;margin:25px 2px 12px}.week-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.week-card{border:1px solid var(--line);background:var(--card);border-radius:19px;padding:13px 10px;text-align:center;box-shadow:0 3px 12px rgba(20,30,50,.025)}.week-card strong{display:block;font-size:13px}.week-card span{font-size:11px;color:var(--muted)}.week-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);display:block;margin:0 auto 7px}
+.day-tabs{display:flex;gap:8px;overflow:auto;padding:3px 0 8px;scrollbar-width:none}.day-tab{border:1px solid var(--line);background:var(--card);color:var(--muted);padding:10px 17px;border-radius:999px;white-space:nowrap;font-size:13px;font-weight:700}.day-tab.active{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 5px 14px rgba(52,120,246,.22)}
+.day-panel{display:none}.day-panel.active{display:block}.day-heading{display:flex;align-items:center;justify-content:space-between;padding:14px 2px 10px}.day-heading h2{font-size:21px;margin:3px 0 0;line-height:1.3}.day-heading p{margin:4px 0 0;color:var(--muted);font-size:12px}.eyebrow{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.5px}.day-symbol{width:49px;height:49px;border-radius:17px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-size:25px;font-weight:700}
+.session-progress{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:13px 15px;margin:8px 0 13px}.progress-copy{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}.progress-copy strong{color:var(--text)}.progress-track{height:7px;border-radius:99px;background:#edf0f5;overflow:hidden}.progress-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#3478f6,#5d9cff);border-radius:99px;transition:width .25s}
+.exercise-list{display:grid;gap:12px}.exercise-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:15px;box-shadow:0 3px 14px rgba(20,30,50,.025)}.exercise-top{display:flex;align-items:center;gap:11px}.exercise-number{width:37px;height:37px;border-radius:13px;background:#f0f3f8;color:#586174;display:grid;place-items:center;font-size:12px;font-weight:800;flex-shrink:0}.exercise-title-wrap{flex:1;min-width:0}.exercise-title-wrap h3{font-size:15px;margin:0 0 4px;font-weight:800}.meta-row{display:flex;gap:7px;flex-wrap:wrap}.meta-row span{font-size:10px;color:#52617a;background:#f3f6fb;padding:3px 8px;border-radius:7px}.done-control{width:30px;height:30px;display:grid;place-items:center;cursor:pointer}.done-control input{position:absolute;opacity:0}.check-ui{width:23px;height:23px;border:1.7px solid #cbd1dc;border-radius:50%;display:block;position:relative}.done-control input:checked+.check-ui{background:var(--green);border-color:var(--green)}.done-control input:checked+.check-ui:after{content:"✓";color:#fff;font-size:14px;position:absolute;inset:0;text-align:center;line-height:21px}.exercise-card.completed{border-color:#c8eadb;background:#fcfffd}.exercise-card.completed .exercise-number{background:#e6f7ef;color:var(--green)}
+.exercise-images{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}figure{margin:0;position:relative;background:#f2f4f7;border-radius:15px;overflow:hidden;min-height:145px;display:flex;flex-direction:column;justify-content:center}figure img{width:100%;height:155px;object-fit:contain;display:block;padding:5px}figcaption{font-size:10px;text-align:center;color:var(--muted);padding:5px 3px;background:#f7f8fa}figure.img-error:before{content:"تصویر در دسترس نیست";display:grid;place-items:center;min-height:145px;color:#858b98;font-size:12px}figure.img-error img{display:none}.image-note{font-size:11px;color:#8a641b;background:#fff8e8;border-radius:10px;padding:7px 10px;margin:9px 0 0}
+.instructions{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.instructions summary{font-size:12px;color:var(--blue);font-weight:800;list-style:none;display:flex;justify-content:space-between;cursor:pointer}.instructions summary::-webkit-details-marker{display:none}.instructions ul{padding:0 19px 0 0;margin:9px 0 0;color:#525a69;font-size:12px}.instructions li{padding:3px 0}.finish-btn{width:100%;border:0;background:#171923;color:white;border-radius:16px;padding:13px;margin-top:15px;font-weight:800;font-size:13px}
+.utility-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.utility-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px}.utility-card h3{font-size:13px;margin:0 0 8px}.utility-card p,.utility-card li{font-size:11px;color:var(--muted);margin:0}.utility-card ul{padding:0 17px 0 0;margin:0}.nutrition{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:15px}.nutrition h3{margin:0 0 10px;font-size:14px}.nutrition-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.nutrition-item{background:#f6f7fa;border-radius:12px;padding:9px 11px}.nutrition-item span{display:block;font-size:10px;color:var(--muted)}.nutrition-item b{font-size:14px}
+.bottom-nav{position:fixed;z-index:10;bottom:0;left:0;right:0;padding:9px 15px calc(9px + env(safe-area-inset-bottom));background:rgba(250,251,253,.9);backdrop-filter:blur(20px);border-top:1px solid rgba(220,224,232,.8)}.nav-inner{max-width:600px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.nav-btn{border:0;background:transparent;color:#8b91a0;padding:5px 2px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px}.nav-btn b{font-size:19px;font-weight:500}.nav-btn.active{color:var(--blue);font-weight:800}
+.search-wrap{margin-top:16px;position:relative}.search-wrap input{width:100%;border:1px solid var(--line);background:var(--card);border-radius:15px;padding:11px 40px 11px 13px;outline:none;font-size:12px}.search-wrap span{position:absolute;right:14px;top:7px;font-size:17px;color:var(--muted)}.toast{position:fixed;bottom:90px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#202534;color:white;border-radius:13px;padding:10px 16px;font-size:12px;transition:.25s;z-index:20;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}.hidden{display:none!important}.footer-note{font-size:10px;color:var(--muted);text-align:center;margin:20px 5px 0}
+@media(min-width:650px){.app{padding-top:30px}.exercise-list{grid-template-columns:1fr 1fr}.exercise-card{align-self:start}.hero{padding:30px}.hero h1{font-size:34px}}@media(max-width:380px){.app{padding-left:11px;padding-right:11px}.exercise-card{padding:12px}figure{min-height:120px}figure img{height:130px}}
+@media print{.bottom-nav,.top-actions,.day-tabs,.finish-btn{display:none!important}.app{padding:0}.day-panel{display:block!important}.exercise-card{break-inside:avoid}.hero{print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar"><div class="brand"><div class="brand-mark">↗</div><span>TRAINING PLAN</span></div><div class="top-actions"><button class="icon-btn" onclick="toggleSearch()" aria-label="جستجو">⌕</button><button class="icon-btn" onclick="window.print()" aria-label="چاپ">⋯</button></div></header>
+<section class="hero"><span class="eyebrow">برنامه تمرینی شخصی</span><h1>قوی‌تر، قدم‌به‌قدم.</h1><p>برنامه سه‌روزه Push / Legs / Pull با راهنمای اجرای حرکات، تصاویر آموزشی و پیگیری پیشرفت هر جلسه.</p><div class="hero-stats"><div class="stat"><b>۳ روز</b><span>در هفته</span></div><div class="stat"><b>۱۹ حرکت</b><span>در مجموع</span></div><div class="stat"><b>۱۲ هفته</b><span>دوره پیشنهادی</span></div></div></section>
+<h2 class="section-label">تقویم هفتگی</h2><div class="week-grid"><div class="week-card"><i class="week-dot"></i><strong>شنبه · Push</strong><span>سینه و سرشانه</span></div><div class="week-card"><i class="week-dot"></i><strong>دوشنبه · Legs</strong><span>پایین‌تنه</span></div><div class="week-card"><i class="week-dot"></i><strong>جمعه · Pull</strong><span>پشت و جلو بازو</span></div></div>
+<div id="searchBox" class="search-wrap hidden"><span>⌕</span><input id="exerciseSearch" type="search" placeholder="جستجوی نام حرکت..." oninput="filterExercises()"></div>
+<h2 class="section-label">جلسه تمرینی</h2><div class="day-tabs" role="tablist"><button class="day-tab active" data-target="push" onclick="selectDay('push',this)">شنبه · Push</button><button class="day-tab" data-target="legs" onclick="selectDay('legs',this)">دوشنبه · Legs</button><button class="day-tab" data-target="pull" onclick="selectDay('pull',this)">جمعه · Pull</button></div>
+
+    <section class="day-panel" id="day-push" data-day="push">
+      <div class="day-heading">
+        <div><span class="eyebrow">شنبه · Push</span><h2>روز فشار</h2><p>بالاتنه · سینه، سرشانه و پشت بازو</p></div>
+        <div class="day-symbol">↗</div>
+      </div>
+      <div class="session-progress"><div class="progress-copy"><span>پیشرفت جلسه</span><strong id="progress-push">۰ از 6</strong></div><div class="progress-track"><span id="bar-push"></span></div></div>
+      <div class="exercise-list">
+        <article class="exercise-card" data-name="پرس سینه دستگاه">
+          <div class="exercise-top">
+            <div class="exercise-number">01</div>
+            <div class="exercise-title-wrap">
+              <h3>پرس سینه دستگاه</h3>
+              <div class="meta-row"><span>۳ × ۸–۱۲</span><span>استراحت ۱۲۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="push-0">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Chest_Press/0.jpg" alt="پرس سینه دستگاه — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Chest_Press/1.jpg" alt="پرس سینه دستگاه — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          <p class="image-note">تصویر مرجع دستگاه پرس سینه</p>
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>دسته‌ها مقابل وسط سینه باشند.</li><li>کمر را به پشتی دستگاه تکیه بده.</li><li>دسته‌ها را به جلو فشار بده.</li><li>به‌آرامی به نقطه شروع برگرد.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="پرس بالاسینه دمبل">
+          <div class="exercise-top">
+            <div class="exercise-number">02</div>
+            <div class="exercise-title-wrap">
+              <h3>پرس بالاسینه دمبل</h3>
+              <div class="meta-row"><span>۳ × ۸–۱۲</span><span>استراحت ۱۲۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="push-1">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/0.jpg" alt="پرس بالاسینه دمبل — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/1.jpg" alt="پرس بالاسینه دمبل — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>زاویه نیمکت را حدود ۳۰ درجه تنظیم کن.</li><li>دمبل‌ها را بالای سینه نگه دار.</li><li>به‌آرامی تا نزدیکی بالای سینه پایین بیاور.</li><li>دمبل‌ها را به سمت بالا پرس کن.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="پرس سرشانه دمبل نشسته">
+          <div class="exercise-top">
+            <div class="exercise-number">03</div>
+            <div class="exercise-title-wrap">
+              <h3>پرس سرشانه دمبل نشسته</h3>
+              <div class="meta-row"><span>۲ × ۱۰–۱۲</span><span>استراحت ۹۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="push-2">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg" alt="پرس سرشانه دمبل نشسته — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/1.jpg" alt="پرس سرشانه دمبل نشسته — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>روی نیمکت با تکیه‌گاه بنشین.</li><li>دمبل‌ها را کنار شانه‌ها نگه دار.</li><li>به سمت بالا پرس کن.</li><li>بدون قوس بیش از حد کمر پایین بیاور.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="نشر جانب دمبل">
+          <div class="exercise-top">
+            <div class="exercise-number">04</div>
+            <div class="exercise-title-wrap">
+              <h3>نشر جانب دمبل</h3>
+              <div class="meta-row"><span>۳ × ۱۲–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="push-3">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg" alt="نشر جانب دمبل — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg" alt="نشر جانب دمبل — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>دمبل‌های سبک را کنار بدن نگه دار.</li><li>دست‌ها را از طرفین تا ارتفاع شانه بالا بیاور.</li><li>آرنج‌ها کمی خم باشند.</li><li>از تاب دادن بدن خودداری کن.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="پشت بازو سیم‌کش طنابی">
+          <div class="exercise-top">
+            <div class="exercise-number">05</div>
+            <div class="exercise-title-wrap">
+              <h3>پشت بازو سیم‌کش طنابی</h3>
+              <div class="meta-row"><span>۲ × ۱۰–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="push-4">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown_-_Rope_Attachment/0.jpg" alt="پشت بازو سیم‌کش طنابی — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown_-_Rope_Attachment/1.jpg" alt="پشت بازو سیم‌کش طنابی — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>آرنج‌ها را نزدیک بدن نگه دار.</li><li>طناب را به سمت پایین فشار بده.</li><li>در پایین حرکت طناب را کمی باز کن.</li><li>به‌آرامی برگرد.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="پشت بازو سیم‌کش بالای سر">
+          <div class="exercise-top">
+            <div class="exercise-number">06</div>
+            <div class="exercise-title-wrap">
+              <h3>پشت بازو سیم‌کش بالای سر</h3>
+              <div class="meta-row"><span>۲ × ۱۰–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="push-5">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rope_Overhead_Triceps_Extension/0.jpg" alt="پشت بازو سیم‌کش بالای سر — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Rope_Overhead_Triceps_Extension/1.jpg" alt="پشت بازو سیم‌کش بالای سر — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>پشت به دستگاه بایست.</li><li>طناب را بالای سر نگه دار.</li><li>آرنج‌ها را نزدیک سر ثابت کن.</li><li>ساعدها را باز کن و سپس کنترل‌شده برگردان.</li></ul>
+          </details>
+        </article></div>
+      <button class="finish-btn" onclick="showFinish('push')">پایان تمرین این روز</button>
+    </section>
+    <section class="day-panel" id="day-legs" data-day="legs">
+      <div class="day-heading">
+        <div><span class="eyebrow">دوشنبه · Legs</span><h2>روز پا</h2><p>پایین‌تنه · چهارسر، همسترینگ، باسن و ساق</p></div>
+        <div class="day-symbol">⌁</div>
+      </div>
+      <div class="session-progress"><div class="progress-copy"><span>پیشرفت جلسه</span><strong id="progress-legs">۰ از 6</strong></div><div class="progress-track"><span id="bar-legs"></span></div></div>
+      <div class="exercise-list">
+        <article class="exercise-card" data-name="پرس پا دستگاه">
+          <div class="exercise-top">
+            <div class="exercise-number">01</div>
+            <div class="exercise-title-wrap">
+              <h3>پرس پا دستگاه</h3>
+              <div class="meta-row"><span>۳ × ۱۰–۱۲</span><span>استراحت ۱۲۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="legs-0">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg" alt="پرس پا دستگاه — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/1.jpg" alt="پرس پا دستگاه — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>پاها را به عرض شانه روی صفحه قرار بده.</li><li>صفحه را به‌آرامی پایین بیاور.</li><li>کمر و لگن را روی پشتی نگه دار.</li><li>صفحه را بالا ببر؛ زانوها را قفل نکن.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="اسکوات جام (goblet squat)">
+          <div class="exercise-top">
+            <div class="exercise-number">02</div>
+            <div class="exercise-title-wrap">
+              <h3>اسکوات جام (Goblet Squat)</h3>
+              <div class="meta-row"><span>۳ × ۱۰–۱۲</span><span>استراحت ۹۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="legs-1">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg" alt="اسکوات جام (Goblet Squat) — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/1.jpg" alt="اسکوات جام (Goblet Squat) — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>یک دمبل را نزدیک سینه نگه دار.</li><li>پاها را به عرض شانه باز کن.</li><li>باسن را به سمت پایین و عقب ببر.</li><li>پاشنه‌ها روی زمین بمانند.</li><li>با کنترل به حالت ایستاده برگرد.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="ددلیفت رومانیایی دمبل">
+          <div class="exercise-top">
+            <div class="exercise-number">03</div>
+            <div class="exercise-title-wrap">
+              <h3>ددلیفت رومانیایی دمبل</h3>
+              <div class="meta-row"><span>۳ × ۸–۱۰</span><span>استراحت ۱۲۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="legs-2">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg" alt="ددلیفت رومانیایی دمبل — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/1.jpg" alt="ددلیفت رومانیایی دمبل — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          <p class="image-note">تصویر مرجع نسخه هالتر؛ اجرای برنامه با دمبل است</p>
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>دمبل‌ها را مقابل ران‌ها نگه دار.</li><li>زانوها را کمی خم کن.</li><li>باسن را به سمت عقب ببر.</li><li>دمبل‌ها را در امتداد پاها پایین بیاور.</li><li>با حفظ حالت طبیعی کمر به حالت ایستاده برگرد.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="پشت پا دستگاه نشسته">
+          <div class="exercise-top">
+            <div class="exercise-number">04</div>
+            <div class="exercise-title-wrap">
+              <h3>پشت پا دستگاه نشسته</h3>
+              <div class="meta-row"><span>۳ × ۱۰–۱۵</span><span>استراحت ۷۵ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="legs-3">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg" alt="پشت پا دستگاه نشسته — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/1.jpg" alt="پشت پا دستگاه نشسته — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>زانوها را با محور چرخش دستگاه تنظیم کن.</li><li>پد دستگاه را به سمت پایین و عقب بکش.</li><li>در انتهای حرکت کمی مکث کن.</li><li>وزنه را آهسته برگردان.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="جلو پا دستگاه">
+          <div class="exercise-top">
+            <div class="exercise-number">05</div>
+            <div class="exercise-title-wrap">
+              <h3>جلو پا دستگاه</h3>
+              <div class="meta-row"><span>۲ × ۱۲–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="legs-4">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/0.jpg" alt="جلو پا دستگاه — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Extensions/1.jpg" alt="جلو پا دستگاه — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>زانوها را با محور دستگاه تنظیم کن.</li><li>پد را با صاف کردن زانوها بالا بیاور.</li><li>در بالای حرکت کمی مکث کن.</li><li>به‌آرامی پایین بیاور.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="ساق پا دستگاه">
+          <div class="exercise-top">
+            <div class="exercise-number">06</div>
+            <div class="exercise-title-wrap">
+              <h3>ساق پا دستگاه</h3>
+              <div class="meta-row"><span>۳ × ۱۲–۲۰</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="legs-5">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg" alt="ساق پا دستگاه — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/1.jpg" alt="ساق پا دستگاه — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>پنجه پا را روی قسمت مخصوص دستگاه قرار بده.</li><li>پاشنه را تا جایی که راحتی پایین ببر.</li><li>با فشار پنجه پا پاشنه را بالا بیاور.</li><li>در بالاترین نقطه کمی مکث کن.</li></ul>
+          </details>
+        </article></div>
+      <button class="finish-btn" onclick="showFinish('legs')">پایان تمرین این روز</button>
+    </section>
+    <section class="day-panel" id="day-pull" data-day="pull">
+      <div class="day-heading">
+        <div><span class="eyebrow">جمعه · Pull</span><h2>روز کشش</h2><p>بالاتنه · پشت، زیربغل، جلو بازو و پشت سرشانه</p></div>
+        <div class="day-symbol">↙</div>
+      </div>
+      <div class="session-progress"><div class="progress-copy"><span>پیشرفت جلسه</span><strong id="progress-pull">۰ از 7</strong></div><div class="progress-track"><span id="bar-pull"></span></div></div>
+      <div class="exercise-list">
+        <article class="exercise-card" data-name="لت سیم‌کش از جلو">
+          <div class="exercise-top">
+            <div class="exercise-number">01</div>
+            <div class="exercise-title-wrap">
+              <h3>لت سیم‌کش از جلو</h3>
+              <div class="meta-row"><span>۳ × ۸–۱۲</span><span>استراحت ۹۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-0">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg" alt="لت سیم‌کش از جلو — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/1.jpg" alt="لت سیم‌کش از جلو — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>میله را کمی بیشتر از عرض شانه بگیر.</li><li>کمی به عقب متمایل شو.</li><li>میله را به سمت بالای سینه پایین بکش.</li><li>به‌آرامی دست‌ها را باز کن.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="قایقی سیم‌کش نشسته">
+          <div class="exercise-top">
+            <div class="exercise-number">02</div>
+            <div class="exercise-title-wrap">
+              <h3>قایقی سیم‌کش نشسته</h3>
+              <div class="meta-row"><span>۳ × ۸–۱۲</span><span>استراحت ۹۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-1">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg" alt="قایقی سیم‌کش نشسته — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg" alt="قایقی سیم‌کش نشسته — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>صاف بنشین و زانوها را کمی خم نگه دار.</li><li>دسته را به سمت پایین شکم بکش.</li><li>کتف‌ها را به هم نزدیک کن.</li><li>به‌آرامی دست‌ها را باز کن.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="زیربغل قایقی سینه‌تکیه">
+          <div class="exercise-top">
+            <div class="exercise-number">03</div>
+            <div class="exercise-title-wrap">
+              <h3>زیربغل قایقی سینه‌تکیه</h3>
+              <div class="meta-row"><span>۲ × ۱۰–۱۲</span><span>استراحت ۹۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-2">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/0.jpg" alt="زیربغل قایقی سینه‌تکیه — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Two-Dumbbell_Row/1.jpg" alt="زیربغل قایقی سینه‌تکیه — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          <p class="image-note">تصویر مرجع زیربغل دمبل خم است، نه دستگاه سینه‌تکیه</p>
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>سینه را روی تکیه‌گاه قرار بده.</li><li>دسته‌ها را به سمت تنه بکش.</li><li>کتف‌ها را به هم نزدیک کن.</li><li>بدون جدا شدن سینه از پشتی، وزنه را برگردان.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="فیس پول سیم‌کش">
+          <div class="exercise-top">
+            <div class="exercise-number">04</div>
+            <div class="exercise-title-wrap">
+              <h3>فیس پول سیم‌کش</h3>
+              <div class="meta-row"><span>۲ × ۱۲–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-3">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg" alt="فیس پول سیم‌کش — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg" alt="فیس پول سیم‌کش — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>طناب را در ارتفاع صورت تنظیم کن.</li><li>طناب را به سمت صورت بکش.</li><li>آرنج‌ها را به طرفین هدایت کن.</li><li>در پایان کتف‌ها را به هم نزدیک کن.</li><li>حرکت را کنترل‌شده انجام بده.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="جلو بازو دمبل ایستاده">
+          <div class="exercise-top">
+            <div class="exercise-number">05</div>
+            <div class="exercise-title-wrap">
+              <h3>جلو بازو دمبل ایستاده</h3>
+              <div class="meta-row"><span>۲ × ۱۰–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-4">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg" alt="جلو بازو دمبل ایستاده — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/1.jpg" alt="جلو بازو دمبل ایستاده — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>دمبل‌ها را کنار بدن نگه دار.</li><li>آرنج‌ها نزدیک پهلو باشند.</li><li>دمبل‌ها را به سمت شانه بالا بیاور.</li><li>بدون تاب دادن بدن پایین بیاور.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="جلو بازو سیم‌کش">
+          <div class="exercise-top">
+            <div class="exercise-number">06</div>
+            <div class="exercise-title-wrap">
+              <h3>جلو بازو سیم‌کش</h3>
+              <div class="meta-row"><span>۲ × ۱۰–۱۵</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-5">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Cable_Curl/0.jpg" alt="جلو بازو سیم‌کش — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Cable_Curl/1.jpg" alt="جلو بازو سیم‌کش — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>روبه‌روی دستگاه بایست.</li><li>آرنج‌ها را نزدیک بدن نگه دار.</li><li>دسته را به سمت بالا بکش.</li><li>به‌آرامی پایین بیاور.</li></ul>
+          </details>
+        </article>
+        <article class="exercise-card" data-name="پلانک">
+          <div class="exercise-top">
+            <div class="exercise-number">07</div>
+            <div class="exercise-title-wrap">
+              <h3>پلانک</h3>
+              <div class="meta-row"><span>۲ × ۲۰–۴۰ ثانیه</span><span>استراحت ۶۰ ثانیه</span></div>
+            </div>
+            <label class="done-control" aria-label="علامت‌گذاری انجام شد">
+              <input type="checkbox" class="done-check" data-id="pull-6">
+              <span class="check-ui"></span>
+            </label>
+          </div>
+          <div class="exercise-images">
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg" alt="پلانک — تصویر اول" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>شروع حرکت</figcaption></figure>
+            <figure><img src="https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg" alt="پلانک — تصویر دوم" loading="lazy" onerror="this.parentElement.classList.add('img-error')"><figcaption>ادامه حرکت</figcaption></figure>
+          </div>
+          
+          <details class="instructions">
+            <summary>نحوه اجرای صحیح <span class="chevron">⌄</span></summary>
+            <ul><li>ساعدها را روی زمین قرار بده.</li><li>بدن را در یک خط مستقیم نگه دار.</li><li>شکم و باسن را منقبض کن.</li><li>لگن را در موقعیت ثابت نگه دار.</li></ul>
+          </details>
+        </article></div>
+      <button class="finish-btn" onclick="showFinish('pull')">پایان تمرین این روز</button>
+    </section>
+<section id="more" class="hidden"><h2 class="section-label">راهنمای برنامه</h2><div class="utility-grid"><div class="utility-card"><h3>گرم‌کردن</h3><ul><li>۴ تا ۵ دقیقه تردمیل یا دوچرخه ثابت</li><li>حرکات نرمشی متناسب با عضلات روز</li><li>۱ تا ۲ ست سبک از حرکت اول</li></ul></div><div class="utility-card"><h3>پیشرفت ۱۲ هفته‌ای</h3><ul><li>هفته ۱–۲: هر حرکت ۲ ست</li><li>هفته ۳–۴: ست‌های کامل برنامه</li><li>هفته ۵–۸: افزایش تکرار و وزنه</li><li>هفته ۹–۱۲: ادامه پیشرفت و ارزیابی</li></ul></div></div>
+<div class="nutrition"><h3>اهداف تغذیه و ریکاوری</h3><div class="nutrition-grid"><div class="nutrition-item"><span>کالری روزانه</span><b>۱۸۰۰ kcal</b></div><div class="nutrition-item"><span>پروتئین</span><b>۱۳۰ گرم</b></div><div class="nutrition-item"><span>کربوهیدرات</span><b>۱۸۵–۱۹۰ گرم</b></div><div class="nutrition-item"><span>چربی</span><b>۵۵ گرم</b></div><div class="nutrition-item"><span>خواب</span><b>۷–۹ ساعت</b></div><div class="nutrition-item"><span>قدم روزانه</span><b>۶۵۰۰–۸۰۰۰</b></div><div class="nutrition-item"><span>هوازی</span><b>۲ × ۱۵–۲۰ دقیقه</b></div></div><p style="margin-top:10px;font-size:11px;color:var(--muted)">مقادیر کالری و درشت‌مغذی‌ها تخمینی‌اند و باید بر اساس روند وزن و عملکرد طی چند هفته تنظیم شوند. کاهش چربی شکم با کاهش چربی کل بدن اتفاق می‌افتد، نه فقط تمرین شکم.</p></div><p class="footer-note">در صورت درد تیز یا غیرعادی، حرکت را متوقف کن. فرم صحیح حرکت از افزایش وزنه مهم‌تر است.</p></section>
+<p class="footer-note">تصاویر آموزشی از مجموعه عمومی Free Exercise DB · برای بارگذاری تصاویر اتصال اینترنت لازم است.</p>
+</div>
+<nav class="bottom-nav"><div class="nav-inner"><button class="nav-btn active" onclick="showView('workout',this)"><b>▦</b>تمرین</button><button class="nav-btn" onclick="showView('more',this)"><b>◷</b>راهنما</button><button class="nav-btn" onclick="resetProgress()"><b>↻</b>بازنشانی</button></div></nav>
+<div id="toast" class="toast"></div>
+<script>
+const days=['push','legs','pull'];
+function selectDay(id){document.querySelectorAll('.day-panel').forEach(x=>x.classList.toggle('active',x.id==='day-'+id));document.querySelectorAll('.day-tab').forEach(x=>x.classList.toggle('active',x.dataset.target===id));document.getElementById('more').classList.add('hidden');document.querySelector('.day-tabs').classList.remove('hidden');}
+function showView(view,btn){document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const more=document.getElementById('more');const isMore=view==='more';more.classList.toggle('hidden',!isMore);document.querySelectorAll('.day-panel,.day-tabs').forEach(x=>x.classList.toggle('hidden',isMore));if(!isMore){const active=document.querySelector('.day-tab.active');selectDay(active?active.dataset.target:'push');}}
+function updateProgress(day){const checks=[...document.querySelectorAll('#day-'+day+' .done-check')];const done=checks.filter(x=>x.checked).length;const total=checks.length;document.getElementById('progress-'+day).textContent=done+' از '+total;document.getElementById('bar-'+day).style.width=(total?done/total*100:0)+'%';checks.forEach(c=>{c.closest('.exercise-card').classList.toggle('completed',c.checked);localStorage.setItem('ppl-'+c.dataset.id,c.checked?'1':'0');});}
+document.querySelectorAll('.done-check').forEach(c=>{c.checked=localStorage.getItem('ppl-'+c.dataset.id)==='1';c.addEventListener('change',()=>updateProgress(c.dataset.id.split('-')[0]));});days.forEach(updateProgress);
+function toggleSearch(){document.getElementById('searchBox').classList.toggle('hidden');document.getElementById('exerciseSearch').focus();}
+function filterExercises(){const q=document.getElementById('exerciseSearch').value.trim().toLowerCase();document.querySelectorAll('.exercise-card').forEach(c=>c.classList.toggle('hidden',q&&!c.dataset.name.includes(q)));}
+function resetProgress(){if(!confirm('علامت‌های انجام‌شدن همه جلسات پاک شود؟'))return;document.querySelectorAll('.done-check').forEach(c=>{c.checked=false;localStorage.removeItem('ppl-'+c.dataset.id);});days.forEach(updateProgress);toast('پیشرفت تمرین‌ها بازنشانی شد');}
+function showFinish(day){const checks=[...document.querySelectorAll('#day-'+day+' .done-check')];const n=checks.filter(c=>c.checked).length;toast(n===checks.length?'آفرین! جلسه کامل شد 👏':`تعداد ${n} حرکت از ${checks.length} حرکت انجام شده`);}
+let toastTimer;function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400);}
+</script>
+</body></html>
